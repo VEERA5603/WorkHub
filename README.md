@@ -19,7 +19,7 @@ WorkHub is a platform connecting customers with skilled technicians for various 
 - **Database**: ![MongoDB](https://img.shields.io/badge/MongoDB-47A248?style=for-the-badge&logo=mongodb&logoColor=white) (MongoDB Atlas)
 - **Payment Gateway**: ![Razorpay](https://img.shields.io/badge/Razorpay-0755F2?style=for-the-badge&logo=razorpay&logoColor=white)
 - **Frontend**: ![EJS](https://img.shields.io/badge/EJS-FFB13B?style=for-the-badge&logo=ejs&logoColor=white), HTML, CSS
-- **Version Control**: ![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)
+
 
 ---
 
