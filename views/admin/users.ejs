@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manage Users</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+</head>
+<body class="bg-gray-100 min-h-screen">
+  <!-- Amazon-style header -->
+  <header class="bg-gray-900 text-white py-2 px-4">
+    <div class="container mx-auto flex items-center justify-between">
+      <div class="flex items-center">
+        <h1 class="text-xl font-bold">Admin<span class="text-yellow-400">Panel</span></h1>
+      </div>
+      <div class="flex items-center text-sm">
+        <div class="mr-6">
+          <div class="text-gray-300">Hello,</div>
+          <div class="font-bold"><%= user.name %></div>
+        </div>
+        <a href="/logout" class="hover:text-yellow-400 transition-colors">
+          <div class="flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+            </svg>
+            Logout
+          </div>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <div class="container mx-auto py-6 px-4">
+    <!-- Page header -->
+    <div class="flex items-center justify-between mb-6">
+      <h1 class="text-2xl font-bold text-gray-800">Manage Users</h1>
+      <a href="/admin/dashboard" class="flex items-center bg-yellow-400 hover:bg-yellow-500 text-gray-900 px-4 py-2 rounded text-sm font-medium transition-colors">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+        </svg>
+        Back to Dashboard
+      </a>
+    </div>
+    
+    <!-- Tab Navigation -->
+    <div class="mb-6 border-b border-gray-200">
+      <ul class="flex flex-wrap -mb-px text-sm font-medium text-center">
+        <li class="mr-2">
+          <a href="#admin-tab" class="inline-block p-4 border-b-2 border-yellow-400 rounded-t-lg text-yellow-500 active group" aria-current="page">
+            Admin Users
+          </a>
+        </li>
+        <li class="mr-2">
+          <a href="#technician-tab" class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 group">
+            Technician Users
+          </a>
+        </li>
+        <li class="mr-2">
+          <a href="#customer-tab" class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 group">
+            Customer Users
+          </a>
+        </li>
+      </ul>
+    </div>
+    
+    <!-- Admin Users Section -->
+    <div id="admin-tab" class="user-section bg-white p-4 rounded shadow mb-6">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="text-lg font-bold text-gray-800">Admin Users</h2>
+        
+      </div>
+      <div class="overflow-x-auto">
+        <table class="min-w-full bg-white">
+          <thead class="bg-gray-100 border-b">
+            <tr>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Role</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Phone</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Registration Date</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Address</th>
+            
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-200">
+            <% users.filter(user => user.role === 'admin').forEach(user => { %>
+              <tr class="hover:bg-gray-50">
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"><%= user.email %></td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"><%= user.name %></td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
+                    <%= user.role %>
+                  </span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"><%= user.phone %></td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"><%= user.registration_date ? new Date(user.registration_date).toLocaleDateString() : 'N/A' %></td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"><%= user.address %></td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm">
+                  
+                </td>
+              </tr>
+            <% }); %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    
+    <!-- Technician Users Section -->
+    <div id="technician-tab" class="user-section bg-white p-4 rounded shadow mb-6 hidden">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="text-lg font-bold text-gray-800">Technician Users</h2>
+        
+      </div>
+      <div class="overflow-x-auto">
+        <table class="min-w-full bg-white">
+          <thead class="bg-gray-100 border-b">
+            <tr>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Role</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Phone</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Registration Date</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Address</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Avg Rating</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total Ratings</th>
+             
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-200">
+            <% users.filter(user => user.role === 'technician').forEach(user => { %>
+              <tr class="hover:bg-gray-50">
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"><%= user.email %></td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"><%= user.name %></td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                    <%= user.role %>
+                  </span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"><%= user.phone %></td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"><%= user.registration_date ? new Date(user.registration_date).toLocaleDateString() : 'N/A' %></td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"><%= user.address %></td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"><%= user.description %></td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  <div class="flex items-center">
+                    <%= user.avg_rating %>
+                    <div class="ml-1 text-yellow-400">★</div>
+                  </div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"><%= user.total_ratings %></td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm">
+                  
+                </td>
+              </tr>
+            <% }); %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    
+    <!-- Customer Users Section -->
+    <div id="customer-tab" class="user-section bg-white p-4 rounded shadow mb-6 hidden">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="text-lg font-bold text-gray-800">Customer Users</h2>
+       
+      </div>
+      <div class="overflow-x-auto">
+        <table class="min-w-full bg-white">
+          <thead class="bg-gray-100 border-b">
+            <tr>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Role</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Phone</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Registration Date</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Address</th>
+            
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-200">
+            <% users.filter(user => user.role === 'customer').forEach(user => { %>
+              <tr class="hover:bg-gray-50">
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"><%= user.email %></td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"><%= user.name %></td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">
+                    <%= user.role %>
+                  </span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"><%= user.phone %></td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"><%= user.registration_date ? new Date(user.registration_date).toLocaleDateString() : 'N/A' %></td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"><%= user.address %></td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm">
+                  
+                </td>
+              </tr>
+            <% }); %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Tab switching functionality
+      const tabs = document.querySelectorAll('a[href^="#"]');
+      const userSections = document.querySelectorAll('.user-section');
+      
+      tabs.forEach(tab => {
+        tab.addEventListener('click', (e) => {
+          e.preventDefault();
+          
+          // Hide all sections
+          userSections.forEach(section => {
+            section.classList.add('hidden');
+          });
+          
+          // Show selected section
+          const targetId = tab.getAttribute('href').substring(1);
+          document.getElementById(targetId).classList.remove('hidden');
+          
+          // Update active tab styling
+          tabs.forEach(t => {
+            t.classList.remove('border-yellow-400', 'text-yellow-500');
+            t.classList.add('border-transparent');
+          });
+          
+          tab.classList.remove('border-transparent');
+          tab.classList.add('border-yellow-400', 'text-yellow-500');
+        });
+      });
+      
+      // GSAP Animations
+      gsap.from('.user-section', {
+        duration: 0.6,
+        y: 20,
+        opacity: 0,
+        ease: 'power2.out'
+      });
+    });
+  </script>
+</body>
+</html>

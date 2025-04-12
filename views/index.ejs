@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WorkHub - Manpower Resources</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <style>
+    .hero {
+      background-image: url('/path-to-background.jpg');
+      background-size: cover;
+      background-position: center;
+      height: 80vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: #333;
+    }
+  </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+  <!-- Amazon-style header -->
+  <header class="bg-gray-900 text-white py-2 px-6">
+    <div class="container mx-auto flex items-center justify-between">
+      <div class="flex items-center">
+        <h1 class="text-3xl font-bold">Work<span class="text-yellow-400">Hub</span></h1>
+      </div>
+      <div class="flex items-center">
+        <% if (user) { %>
+          <div class="mr-6">
+            <div class="text-gray-300">Hello,</div>
+            <div class="font-bold"><%= user.name %></div>
+          </div>
+          <a href="/logout" class="flex items-center hover:text-yellow-400 transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+            </svg>
+            Logout
+          </a>
+        <% } else { %>
+          <a href="/login" class="bg-yellow-400 hover:bg-yellow-500 text-gray-900 px-4 py-2 rounded-md font-medium transition duration-300">Login</a>
+          <a href="/register" class="bg-gray-800 hover:bg-gray-700 text-white px-4 py-2 rounded-md ml-4 font-medium border border-gray-700 transition duration-300">Register</a>
+        <% } %>
+      </div>
+    </div>
+  </header>
+  
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="max-w-2xl">
+      <h2 class="text-5xl font-bold mb-4">Find Trusted Professionals Instantly</h2>
+      <p class="text-lg mb-6">Plumbers, electricians, mechanics, and more - all in one place.</p>
+      <a href="/services" class="bg-yellow-400 hover:bg-yellow-500 text-gray-900 px-6 py-3 rounded-md text-lg font-medium transition duration-300">Browse Services</a>
+    </div>
+  </section>
+  
+  <script>
+    gsap.from(".hero", { opacity: 0, y: 50, duration: 1, ease: "power3.out" });
+  </script>
+</body>
+</html>

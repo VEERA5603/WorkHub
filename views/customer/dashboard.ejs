@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Customer Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+</head>
+<body class="bg-gray-100 min-h-screen">
+  <!-- Header -->
+  <header class="bg-gray-900 text-white py-3 px-4 shadow-md">
+    <div class="container mx-auto flex items-center justify-between">
+      <div class="flex items-center">
+        <h1 class="text-xl font-bold">Customer<span class="text-yellow-400">Dashboard</span></h1>
+      </div>
+      <div class="flex items-center text-sm">
+        <div class="mr-6">
+          <div class="text-gray-300">Hello,</div>
+          <div class="font-bold"><%= user.name %></div>
+        </div>
+        <a href="/logout" class="flex items-center hover:text-yellow-400 transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+          </svg>
+          Logout
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <div class="container mx-auto py-8 px-4">
+    <div id="dashboard-container" class="max-w-6xl mx-auto">
+      <!-- Welcome banner -->
+      <div class="bg-gradient-to-r from-gray-800 to-gray-900 text-white p-6 rounded-lg shadow-lg mb-8 transform transition-all hover:shadow-xl">
+        <div class="flex items-center justify-between">
+          <div>
+            <h1 class="text-2xl font-semibold">Welcome back, <span class="font-bold text-yellow-400"><%= user.name %></span></h1>
+            <p class="text-gray-300 mt-1">Find the right technician for your needs</p>
+          </div>
+          <div class="hidden md:block">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-yellow-400 opacity-80" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+            </svg>
+          </div>
+        </div>
+      </div>
+      
+      <div class="grid md:grid-cols-3 gap-8">
+        <!-- Find a Technician Section -->
+        <div class="md:col-span-2">
+          <div class="bg-white rounded-lg shadow-md overflow-hidden">
+            <div class="bg-gray-50 py-4 px-6 border-b border-gray-200">
+              <h2 class="text-xl font-semibold text-gray-800 flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+                Find a Technician
+              </h2>
+            </div>
+            
+            <div class="p-6">
+              <div class="mb-6">
+                <div class="flex mb-4">
+                  <input 
+                    id="issue-input" 
+                    type="text" 
+                    placeholder="Describe your issue here..." 
+                    class="flex-grow px-4 py-3 border border-gray-300 rounded-l-md focus:outline-none focus:ring-1 focus:ring-yellow-500 focus:border-yellow-500"
+                  >
+                  <button 
+                    id="search-button" 
+                    class="bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-medium px-6 py-3 rounded-r-md transition duration-300"
+                  >
+                    Search
+                  </button>
+                </div>
+                
+                <div id="loading-indicator" class="hidden">
+                  <div class="flex justify-center items-center p-4">
+                    <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-yellow-500"></div>
+                    <span class="ml-3 text-gray-700">Finding the best technician for you...</span>
+                  </div>
+                </div>
+              </div>
+              
+              <div id="result-container" class="hidden">
+                <div class="border border-gray-200 rounded-md">
+                  <div class="bg-gray-50 p-3 border-b border-gray-200 rounded-t-md">
+                    <h3 class="font-medium text-gray-800">Top Technician Recommendations</h3>
+                  </div>
+                  
+                  <div id="technician-list" class="p-4 grid grid-cols-1 sm:grid-cols-2 gap-4"></div>
+                  
+                  <div class="bg-gray-50 p-3 border-t border-gray-200 rounded-b-md flex justify-center">
+                    <button id="new-search-button" class="bg-gray-200 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-300 transition duration-300 text-sm">
+                      New Search
+                    </button>
+                  </div>
+                </div>
+              </div>
+              
+              <div id="error-container" class="hidden">
+                <div class="bg-red-50 text-red-700 p-4 rounded-md border border-red-200 flex items-start">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  <p id="error-message">Something went wrong. Please try again.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Customer Jobs Section -->
+        <div class="md:col-span-1">
+          <div class="bg-white rounded-lg shadow-md overflow-hidden h-full">
+            <div class="bg-gray-50 py-4 px-6 border-b border-gray-200">
+              <h2 class="text-xl font-semibold text-gray-800 flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                </svg>
+                Your Jobs
+              </h2>
+            </div>
+            
+            <div class="p-4">
+              <ul class="divide-y divide-gray-200">
+                <% if (jobs.length === 0) { %>
+                  <li class="py-6 text-gray-500 text-center">No jobs yet.</li>
+                <% } else { %>
+                  <% jobs.forEach(job => { %>
+                    <li class="py-4 hover:bg-gray-50 px-3 rounded-md transition-colors">
+                      <div class="flex items-center justify-between mb-2">
+                        <div class="flex items-center">
+                          <% if (job.status === 'Completed') { %>
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                              <%= job.status %>
+                            </span>
+                          <% } else if (job.status === 'In Progress') { %>
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                              <%= job.status %>
+                            </span>
+                          <% } else { %>
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                              <%= job.status %>
+                            </span>
+                          <% } %>
+                        </div>
+                        <p class="text-sm text-gray-600 font-medium">₹<%= job.amount || 'N/A' %></p>
+                      </div>
+                      <div class="flex justify-end">
+                        <a href="/technician/jobs/<%= job._id %>" class="text-yellow-600 font-medium hover:text-yellow-700 text-sm flex items-center">
+                          View details
+                          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                          </svg>
+                        </a>
+                      </div>
+                    </li>
+                  <% }) %>
+                <% } %>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    // Animation for dashboard
+    gsap.from("#dashboard-container", { opacity: 0, y: 30, duration: 0.8, ease: "power2.out" });
+    
+    // DOM elements
+    const issueInput = document.getElementById('issue-input');
+    const searchButton = document.getElementById('search-button');
+    const loadingIndicator = document.getElementById('loading-indicator');
+    const resultContainer = document.getElementById('result-container');
+    const errorContainer = document.getElementById('error-container');
+    const errorMessage = document.getElementById('error-message');
+    const newSearchButton = document.getElementById('new-search-button');
+    
+    // Search function
+    async function searchTechnician() {
+      const issue = issueInput.value.trim();
+      
+      if (!issue) {
+        showError('Please describe your issue first');
+        return;
+      }
+      
+      try {
+        // Show loading, hide other containers
+        loadingIndicator.classList.remove('hidden');
+        resultContainer.classList.add('hidden');
+        errorContainer.classList.add('hidden');
+        
+        // Call API endpoint
+        const response = await fetch('/ai/recommend_technician', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ issue }),
+        });
+        
+        if (!response.ok) {
+          throw new Error('No technician Matched');
+        }
+        
+        const data = await response.json();
+        
+        // Hide loading
+        loadingIndicator.classList.add('hidden');
+        
+        if (data.recommendations && data.recommendations.length > 0) {
+          // Show result
+          const technicianList = document.getElementById('technician-list');
+          technicianList.innerHTML = '';
+
+          data.recommendations.forEach(tech => {
+            const techCard = document.createElement('div');
+            techCard.className = "border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-shadow bg-white overflow-hidden";
+
+            techCard.innerHTML = `
+              <div class="bg-gray-50 p-3 border-b border-gray-200">
+                <div class="flex justify-between items-center">
+                  <h4 class="font-medium text-gray-900">${tech.recommended_technician}</h4>
+                  <div class="flex items-center bg-yellow-100 px-2 py-1 rounded text-xs">
+                    <span class="text-yellow-500 mr-1">★</span>
+                    <span class="font-bold">${tech.rating}</span>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="p-3">
+                <p class="text-sm text-gray-700 mb-3 line-clamp-2">
+                  ${tech.description}
+                </p>
+
+                <div class="text-xs text-gray-600 mb-3">
+                  <div class="mb-1">
+                    <span class="font-semibold">Phone:</span> ${tech.contact.phone}
+                  </div>
+                  <div>
+                    <span class="font-semibold">Match Score:</span> 
+                    <span class="text-green-600 font-bold">${tech.score.toFixed(2)}</span>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="px-3 pb-3">
+                <a href="/technician/details/${tech._id}" class="block w-full bg-yellow-400 hover:bg-yellow-500 text-gray-900 text-center py-2 px-4 rounded-md font-medium transition duration-300 text-sm">
+                  View Profile
+                </a>
+              </div>
+            `;
+
+            technicianList.appendChild(techCard);
+          });
+
+          resultContainer.classList.remove('hidden');
+          
+          // Animate result appearance
+          gsap.from("#technician-list > div", { 
+            opacity: 0, 
+            y: 15, 
+            duration: 0.4, 
+            stagger: 0.1,
+            ease: "power1.out"
+          });
+        } else {
+          showError('No suitable technician found. Please try a different description.');
+        }
+        
+      } catch (error) {
+        console.error('Error:', error);
+        loadingIndicator.classList.add('hidden');
+        showError('No suitable technician found or Online. Please try a different description or try back later.');
+      }
+    }
+    
+    // Show error message
+    function showError(message) {
+      errorMessage.textContent = message;
+      errorContainer.classList.remove('hidden');
+      gsap.from("#error-container", { opacity: 0, y: 20, duration: 0.5 });
+    }
+    
+    // Reset search
+    function resetSearch() {
+      resultContainer.classList.add('hidden');
+      errorContainer.classList.add('hidden');
+      issueInput.value = '';
+      issueInput.focus();
+    }
+    
+    // Event listeners
+    searchButton.addEventListener('click', searchTechnician);
+    
+    issueInput.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        searchTechnician();
+      }
+    });
+    
+    newSearchButton.addEventListener('click', resetSearch);
+  </script>
+</body>
+</html>

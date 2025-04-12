@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register | WorkHub</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+</head>
+<body class="flex items-center justify-center min-h-screen bg-gray-100">
+  <div id="register-container" class="bg-white p-8 rounded-lg shadow-lg w-full max-w-sm text-center border border-gray-200">
+    <h1 class="text-3xl font-semibold text-gray-800 mb-4">Complete Registration</h1>
+    <p class="text-gray-600 mb-6">Enter your email to check eligibility and complete registration.</p>
+    
+    <% if (error) { %>
+      <div class="bg-red-100 text-red-700 p-3 rounded-md mb-4 font-medium"><%= error %></div>
+    <% } %>
+    
+    <% if (success) { %>
+      <div class="bg-green-100 text-green-700 p-3 rounded-md mb-4 font-medium"><%= success %></div>
+    <% } %>
+    
+    <form action="/register" method="POST" class="space-y-4">
+      <div>
+        <label for="email" class="block text-left text-gray-700 font-medium">Email Address</label>
+        <input type="email" id="email" name="email" required class="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring focus:ring-gray-400 outline-none">
+      </div>
+      <button type="submit" class="w-full bg-gray-800 text-white px-4 py-3 rounded-md font-semibold hover:bg-gray-900 transition duration-300">Check Eligibility</button>
+    </form>
+    
+    <p class="mt-4 text-gray-600">Already registered? <a href="/login" class="text-gray-800 font-medium hover:underline">Login here</a></p>
+  </div>
+  
+  <script>
+    gsap.from("#register-container", { opacity: 0, y: 50, duration: 1, ease: "power3.out" });
+  </script>
+</body>
+</html>

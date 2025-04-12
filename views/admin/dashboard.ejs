@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen">
+  <!-- Amazon-style header -->
+  <header class="bg-gray-900 text-white py-2 px-4">
+    <div class="container mx-auto flex items-center justify-between">
+      <div class="flex items-center">
+        <h1 class="text-xl font-bold">Admin<span class="text-yellow-400">Panel</span></h1>
+      </div>
+      <div class="flex items-center text-sm">
+        <div class="mr-6">
+          <div class="text-gray-300">Hello,</div>
+          <div class="font-bold"><%= user.name %></div>
+        </div>
+        <a href="/logout" class="hover:text-yellow-400 transition-colors">
+          <div class="flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+            </svg>
+            Logout
+          </div>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main content -->
+  <div class="container mx-auto py-6 px-4">
+    <div class="flex flex-col md:flex-row gap-6">
+      <!-- Sidebar navigation -->
+      <div class="w-full md:w-64 bg-white rounded shadow menu-card">
+        <div class="p-4 border-b border-gray-200">
+          <h2 class="text-xl font-bold text-gray-700">Quick Actions</h2>
+        </div>
+        
+        <div class="p-4">
+          <ul class="space-y-1">
+            <li class="menu-item">
+              <a href="/admin/users" class="flex items-center p-2 rounded hover:bg-yellow-50 transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-yellow-500 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                </svg>
+                <span class="text-gray-700 font-medium">Manage Users</span>
+              </a>
+            </li>
+            
+            <li class="menu-item">
+              <a href="/admin/add-user" class="flex items-center p-2 rounded hover:bg-yellow-50 transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-yellow-500 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
+                </svg>
+                <span class="text-gray-700 font-medium">Add New User</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      
+      <!-- Main Content Area -->
+      <div class="flex-1 content-area">
+        <div class="bg-white p-4 mb-6 rounded shadow">
+          <h1 class="text-2xl font-bold text-gray-800">Dashboard</h1>
+          <p class="text-gray-600 text-sm">Welcome to your admin dashboard</p>
+        </div>
+        
+        <!-- Amazon-style content cards -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div class="bg-white p-4 rounded shadow hover:shadow-md transition-shadow">
+            <h3 class="font-bold text-gray-800 mb-2">User Management</h3>
+            <p class="text-gray-600 text-sm mb-3">View and manage system users</p>
+            <a href="/admin/users" class="inline-block bg-yellow-400 hover:bg-yellow-500 text-gray-900 px-4 py-2 rounded text-sm font-medium transition-colors">
+              View Users
+            </a>
+          </div>
+          
+          <div class="bg-white p-4 rounded shadow hover:shadow-md transition-shadow">
+            <h3 class="font-bold text-gray-800 mb-2">Quick Add</h3>
+            <p class="text-gray-600 text-sm mb-3">Add a new user to the system</p>
+            <a href="/admin/add-user" class="inline-block bg-yellow-400 hover:bg-yellow-500 text-gray-900 px-4 py-2 rounded text-sm font-medium transition-colors">
+              Add User
+            </a>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // GSAP Animations
+      gsap.from('.menu-card', {
+        duration: 0.6,
+        x: -30,
+        opacity: 0,
+        ease: 'power2.out'
+      });
+      
+      gsap.from('.content-area', {
+        duration: 0.6,
+        y: 20,
+        opacity: 0,
+        delay: 0.2,
+        ease: 'power2.out'
+      });
+      
+      gsap.from('.menu-item', {
+        duration: 0.4,
+        opacity: 0,
+        y: 10,
+        stagger: 0.1,
+        delay: 0.4,
+        ease: 'power2.out'
+      });
+    });
+  </script>
+</body>
+</html>
