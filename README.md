@@ -65,7 +65,7 @@ WorkHub/
 
 3. Configure variables:
    
-   MONGO_URI=<your-mongodb-atlas-uri>
+   MONGODB_URI=<your-mongodb-atlas-uri>
    
 
 4. Start the server:
@@ -84,6 +84,6 @@ WorkHub/
 
 For any inquiries, feel free to reach out:
 
-- **Email**: [your-email@example.com](mailto:eveera5603@gmail.com)
+- **Email**: [eveera5603@gmail.com](mailto:eveera5603@gmail.com)
 - **GitHub**: [VEERA5603](https://github.com/VEERA5603)
 
